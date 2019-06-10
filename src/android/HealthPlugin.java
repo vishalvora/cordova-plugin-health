@@ -406,7 +406,7 @@ public class HealthPlugin extends CordovaPlugin {
                 pm.getPackageInfo("com.google.android.apps.fitness", PackageManager.GET_ACTIVITIES);
                 // Success return object
                 PluginResult result;
-                result = new PluginResult(PluginResult.Status.OK, true);
+                result = new PluginResult(PluginResult.Status.OK, false);
                 callbackContext.sendPluginResult(result);
             } catch (PackageManager.NameNotFoundException e) {
                 Log.d(TAG, "Google Fit not installed");
