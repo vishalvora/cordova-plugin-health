@@ -397,20 +397,23 @@ public class HealthPlugin extends CordovaPlugin {
 
     // detects if a) Google APIs are available, b) Google Fit is actually installed
     private void isAvailable(final CallbackContext callbackContext) {
-        Fitness.getRecordingClient(this, GoogleSignIn.getLastSignedInAccount(this))
-        .subscribe(DataType.TYPE_ACTIVITY_SAMPLES)
-        .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.i(TAG, "Successfully subscribed!");
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.i(TAG, "There was a problem subscribing.");
-            }
-        });
+        FitnessOptions fitnessOptions =
+                FitnessOptions.builder().addDataType(DataType.TYPE_ACTIVITY_SAMPLES).build();
+
+        // Check if the user has permissions to talk to Fitness APIs, otherwise authenticate the
+        // user and request required permissions.
+        if (!GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), fitnessOptions)) {
+            GoogleSignIn.requestPermissions(
+                    this,
+                    REQUEST_OAUTH_REQUEST_CODE,
+                    GoogleSignIn.getLastSignedInAccount(this),
+                    fitnessOptions);
+        } else {
+            subscribe();
+        }
+        
+        
+        
         // first check that the Google APIs are available
         GoogleApiAvailability gapi = GoogleApiAvailability.getInstance();
         int apiresult = gapi.isGooglePlayServicesAvailable(this.cordova.getActivity());
@@ -432,6 +435,27 @@ public class HealthPlugin extends CordovaPlugin {
         callbackContext.sendPluginResult(result);
     }
 
+    
+     public void subscribe() {
+        // To create a subscription, invoke the Recording API. As soon as the subscription is
+        // active, fitness data will start recording.
+        // [START subscribe_to_datatype]
+        Fitness.getRecordingClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                .subscribe(DataType.TYPE_ACTIVITY_SAMPLES)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.i(TAG, "Successfully subscribed!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i(TAG, "There was a problem subscribing.");
+                    }
+                });
+        // [END subscribe_to_datatype]
+    }
     /**
      * Disconnects the client from the Google APIs
      *
