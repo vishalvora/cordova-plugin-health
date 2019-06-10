@@ -396,6 +396,20 @@ public class HealthPlugin extends CordovaPlugin {
 
     // detects if a) Google APIs are available, b) Google Fit is actually installed
     private void isAvailable(final CallbackContext callbackContext) {
+        Fitness.getRecordingClient(this, GoogleSignIn.getLastSignedInAccount(this))
+        .subscribe(DataType.TYPE_ACTIVITY_SAMPLES)
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.i(TAG, "Successfully subscribed!");
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i(TAG, "There was a problem subscribing.");
+            }
+        });
         // first check that the Google APIs are available
         GoogleApiAvailability gapi = GoogleApiAvailability.getInstance();
         int apiresult = gapi.isGooglePlayServicesAvailable(this.cordova.getActivity());
