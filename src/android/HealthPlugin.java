@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.Scopes;
@@ -397,21 +397,9 @@ public class HealthPlugin extends CordovaPlugin {
 
     // detects if a) Google APIs are available, b) Google Fit is actually installed
     private void isAvailable(final CallbackContext callbackContext) {
-        FitnessOptions fitnessOptions =
-                FitnessOptions.builder().addDataType(DataType.TYPE_ACTIVITY_SAMPLES).build();
-
-        // Check if the user has permissions to talk to Fitness APIs, otherwise authenticate the
-        // user and request required permissions.
-        if (!GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), fitnessOptions)) {
-            GoogleSignIn.requestPermissions(
-                    this,
-                    REQUEST_OAUTH_REQUEST_CODE,
-                    GoogleSignIn.getLastSignedInAccount(this),
-                    fitnessOptions);
-        } else {
-            subscribe();
-        }
         
+            subscribe();
+                
         
         
         // first check that the Google APIs are available
@@ -440,7 +428,7 @@ public class HealthPlugin extends CordovaPlugin {
         // To create a subscription, invoke the Recording API. As soon as the subscription is
         // active, fitness data will start recording.
         // [START subscribe_to_datatype]
-        Fitness.getRecordingClient(this, GoogleSignIn.getLastSignedInAccount(this))
+        Fitness.getRecordingClient(this, "vishalgvora@gmail.com")
                 .subscribe(DataType.TYPE_ACTIVITY_SAMPLES)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
