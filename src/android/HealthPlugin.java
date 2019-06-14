@@ -398,7 +398,7 @@ public class HealthPlugin extends CordovaPlugin {
     // detects if a) Google APIs are available, b) Google Fit is actually installed
     private void isAvailable(final CallbackContext callbackContext) {
         
-            //subscribe();
+            subscribe();
                 
         
         
@@ -425,10 +425,20 @@ public class HealthPlugin extends CordovaPlugin {
 
     
      public void subscribe() {
-        // To create a subscription, invoke the Recording API. As soon as the subscription is
-        // active, fitness data will start recording.
-        // [START subscribe_to_datatype]
-       
+        Fitness.getRecordingClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                .subscribe(DataType.AGGREGATE_STEP_COUNT_DELTA)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.i(LOG_TAG, "Successfully subscribed!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i(LOG_TAG, "There was a problem subscribing.");
+                    }
+                });
     }
     /**
      * Disconnects the client from the Google APIs
@@ -562,7 +572,7 @@ public class HealthPlugin extends CordovaPlugin {
         builder.addApi(Fitness.HISTORY_API);
         builder.addApi(Fitness.CONFIG_API);
         builder.addApi(Fitness.SESSIONS_API);
-        builder.addApi(Fitness.RECORDING_API);
+        //builder.addApi(Fitness.RECORDING_API);
         // scopes: https://developers.google.com/android/reference/com/google/android/gms/common/Scopes.html
         if (bodyscope == READ_PERMS) {
             builder.addScope(new Scope(Scopes.FITNESS_BODY_READ));
