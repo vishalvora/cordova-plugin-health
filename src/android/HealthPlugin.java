@@ -398,7 +398,7 @@ public class HealthPlugin extends CordovaPlugin {
     // detects if a) Google APIs are available, b) Google Fit is actually installed
     private void isAvailable(final CallbackContext callbackContext) {
         
-            subscribe();
+            //subscribe();
                 
         
         
@@ -428,21 +428,7 @@ public class HealthPlugin extends CordovaPlugin {
         // To create a subscription, invoke the Recording API. As soon as the subscription is
         // active, fitness data will start recording.
         // [START subscribe_to_datatype]
-        Fitness.getRecordingClient(this, "vishalgvora@gmail.com")
-                .subscribe(DataType.TYPE_ACTIVITY_SAMPLES)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "Successfully subscribed!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.i(TAG, "There was a problem subscribing.");
-                    }
-                });
-        // [END subscribe_to_datatype]
+       
     }
     /**
      * Disconnects the client from the Google APIs
