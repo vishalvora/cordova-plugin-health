@@ -426,8 +426,8 @@ public class HealthPlugin extends CordovaPlugin {
     }
 
     
-     public void subscribe() {
-        Fitness.getRecordingClient(this, GoogleSignIn.getLastSignedInAccount(MainActivity.this))
+     public void subscribe(Context context) {
+        Fitness.getRecordingClient(this, GoogleSignIn.getLastSignedInAccount(context))
                 .subscribe(DataType.AGGREGATE_STEP_COUNT_DELTA)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
