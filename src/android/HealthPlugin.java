@@ -275,6 +275,7 @@ public class HealthPlugin extends CordovaPlugin {
         if (requestCode == REQUEST_OAUTH) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.i(TAG, "Got authorisation from Google Fit");
+                subscribe();
                 if (!mClient.isConnected() && !mClient.isConnecting()) {
                     Log.d(TAG, "Re-trying connection with Fit");
                     mClient.connect();
@@ -400,7 +401,7 @@ public class HealthPlugin extends CordovaPlugin {
     // detects if a) Google APIs are available, b) Google Fit is actually installed
     private void isAvailable(final CallbackContext callbackContext) {
         
-            subscribe();
+            //subscribe();
                 
         
         
