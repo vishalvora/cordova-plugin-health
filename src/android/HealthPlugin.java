@@ -276,7 +276,7 @@ public class HealthPlugin extends CordovaPlugin {
         if (requestCode == REQUEST_OAUTH) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.i(TAG, "Got authorisation from Google Fit");
-                subscribe();
+                unsubscribe();
                 if (!mClient.isConnected() && !mClient.isConnecting()) {
                     Log.d(TAG, "Re-trying connection with Fit");
                     mClient.connect();
@@ -455,7 +455,7 @@ public class HealthPlugin extends CordovaPlugin {
 
         // Invoke the Recording API to unsubscribe from the data type and specify a callback that
         // will check the result.
-        Fitness.RecordingApi.unsubscribe(mClient, DataType.AGGREGATE_STEP_COUNT_DELTA)
+        Fitness.RecordingApi.unsubscribe(mClient, DataType.TYPE_STEP_COUNT_DELTA)
                 .setResultCallback(new ResultCallback<Status>() {
                     @Override
                     public void onResult(@NonNull Status status) {
