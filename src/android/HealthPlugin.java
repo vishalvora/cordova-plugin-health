@@ -276,7 +276,7 @@ public class HealthPlugin extends CordovaPlugin {
         if (requestCode == REQUEST_OAUTH) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.i(TAG, "Got authorisation from Google Fit");
-                unsubscribe();
+                subscribe();
                 if (!mClient.isConnected() && !mClient.isConnecting()) {
                     Log.d(TAG, "Re-trying connection with Fit");
                     mClient.connect();
