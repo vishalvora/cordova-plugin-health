@@ -455,7 +455,7 @@ public class HealthPlugin extends CordovaPlugin {
 
         // Invoke the Recording API to unsubscribe from the data type and specify a callback that
         // will check the result.
-        Fitness.RecordingApi.unsubscribe(mClient, DataType.TYPE_ACTIVITY_SAMPLE)
+        Fitness.RecordingApi.unsubscribe(mClient, DataType.AGGREGATE_STEP_COUNT_DELTA)
                 .setResultCallback(new ResultCallback<Status>() {
                     @Override
                     public void onResult(@NonNull Status status) {
@@ -601,7 +601,7 @@ public class HealthPlugin extends CordovaPlugin {
         builder.addApi(Fitness.CONFIG_API);
         builder.addApi(Fitness.SESSIONS_API);
         builder.addApi(Fitness.RECORDING_API);
-        builder..useDefaultAccount()
+        builder.useDefaultAccount();
         // scopes: https://developers.google.com/android/reference/com/google/android/gms/common/Scopes.html
         if (bodyscope == READ_PERMS) {
             builder.addScope(new Scope(Scopes.FITNESS_BODY_READ));
