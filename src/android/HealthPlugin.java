@@ -430,26 +430,22 @@ public class HealthPlugin extends CordovaPlugin {
     
      public void subscribe() {
          
-         FitnessOptions fitnessOptions = FitnessOptions.builder()
-                .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
-                .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
-                .addDataType(DataType.TYPE_ACTIVITY_SAMPLES)
-                .build();
-         
-        if (!GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), fitnessOptions)) {
-            Log.i(LOG_TAG, "onCreate: permission");
-            GoogleSignIn.requestPermissions(
-                    this, // your activity
-                    GOOGLE_FIT_PERMISSIONS_REQUEST_CODE,
-                    GoogleSignIn.getLastSignedInAccount(this),
-                    fitnessOptions);
-        } else {
-            //accessGoogleFit();
-            //subscribe();
-            //listsubscrib();
-            //unsubscrib();
-            Log.i(LOG_TAG, "onCreate: Access Googlefit directly");
-        }
+        Fitness.RecordingApi.subscribe(googleApiClient, DataType.TYPE_STEP_COUNT_DELTA)
+                .setResultCallback(new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        if (status.isSuccess()) {
+                            if (status.getStatusCode()
+                                    == FitnessStatusCodes.SUCCESS_ALREADY_SUBSCRIBED) {
+                                Log.i(TAG, "Existing subscription for activity detected.");
+                            } else {
+                                Log.i(TAG, "Successfully subscribed!");
+                            }
+                        } else {
+                            Log.i(TAG, "There was a problem subscribing.");
+                        }
+                    }
+                });
     }
     /**
      * Disconnects the client from the Google APIs
