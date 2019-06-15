@@ -276,7 +276,7 @@ public class HealthPlugin extends CordovaPlugin {
         if (requestCode == REQUEST_OAUTH) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.i(TAG, "Got authorisation from Google Fit");
-                subscribe();
+                unsubscribe();
                 if (!mClient.isConnected() && !mClient.isConnecting()) {
                     Log.d(TAG, "Re-trying connection with Fit");
                     mClient.connect();
@@ -443,6 +443,27 @@ public class HealthPlugin extends CordovaPlugin {
                             }
                         } else {
                             Log.i(TAG, "There was a problem subscribing.");
+                        }
+                    }
+                });
+    }
+    
+      public void unsubscribe() {
+         
+        final String dataTypeStr = DataType.TYPE_STEP_COUNT_DELTA.toString();
+        Log.i(TAG, "Unsubscribing from data type: " + dataTypeStr);
+
+        // Invoke the Recording API to unsubscribe from the data type and specify a callback that
+        // will check the result.
+        Fitness.RecordingApi.unsubscribe(mClient, DataType.TYPE_ACTIVITY_SAMPLE)
+                .setResultCallback(new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        if (status.isSuccess()) {
+                            Log.i(TAG, "Successfully unsubscribed for data type: " + dataTypeStr);
+                        } else {
+                            // Subscription not removed
+                            Log.i(TAG, "Failed to unsubscribe for data type: " + dataTypeStr);
                         }
                     }
                 });
