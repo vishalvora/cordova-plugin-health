@@ -430,7 +430,7 @@ public class HealthPlugin extends CordovaPlugin {
     
      public void subscribe() {
          
-        Fitness.RecordingApi.subscribe(mClient, DataType.TYPE_DISTANCE_DELTA)
+        Fitness.RecordingApi.subscribe(mClient, DataType.TYPE_ACTIVITY_SAMPLES)
                 .setResultCallback(new ResultCallback<Status>() {
                     @Override
                     public void onResult(@NonNull Status status) {
