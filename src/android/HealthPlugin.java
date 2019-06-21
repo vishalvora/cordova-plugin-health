@@ -601,6 +601,7 @@ public class HealthPlugin extends CordovaPlugin {
         builder.addApi(Fitness.CONFIG_API);
         builder.addApi(Fitness.SESSIONS_API);
         builder.addApi(Fitness.RECORDING_API);
+        builder.addScope(new Scope(Scopes.FITNESS_LOCATION_READ_WRITE));
         //builder.useDefaultAccount();
         // scopes: https://developers.google.com/android/reference/com/google/android/gms/common/Scopes.html
         if (bodyscope == READ_PERMS) {
